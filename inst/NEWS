@@ -7,8 +7,6 @@ CHANGES IN VERSION 1.0.2
 
     o Users may annotate to chromatin states in multiple cell lines, if desired.
 
-  o Updated vignette to include chromHMM description.
-
   o Add support for CpG annotations for hg38, mm10, and rn6 via the UCSC
     goldenpath URLs.
 
