@@ -14,20 +14,24 @@ vignette: >
 
 Genomic regions resulting from next-generation sequencing experiments and bioinformatics pipelines are more meaningful when annotated to genomic features. A SNP occurring in an exon, or an enhancer, is likely of greater interest than one occurring in an inter-genic region. It may be of interest to find that a particular transcription factor overwhelmingly binds in promoters, while another binds mostly in 3’UTRs. Hyper-methylation at promoters containing a CpG island may indicate different regulatory regimes in one condition compared to another.
 
-`annotatr` provides *pre-built* genomic annotations and a set of functions to read, intersect, summarize, and visualize genomic regions in the context of genomic annotations.
+`annotatr` provides genomic annotations and a set of functions to read, intersect, summarize, and visualize genomic regions in the context of genomic annotations.
 
 # Installation
 
-`annotatr` package source is available at [http://www.github.com/rcavalcante/annotatr](http://www.github.com/rcavalcante/annotatr). The package can be installed directly from GitHub with the [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package.
+The release version of `annotatr` is available via [Bioconductor](http://bioconductor.org/packages/annotatr/), and can be installed as follows:
 
 ```{r, eval=FALSE}
-# Install BiocStyle, GenomeInfoDb, IRanges, and GenomicRanges first
-# install_github() does not support installation of Bioconductor dependencies
 source("http://bioconductor.org/biocLite.R")
-biocLite(c("BiocStyle","GenomeInfoDb","IRanges","GenomicRanges"))
+biocLite("annotatr")
+```
 
+The development version of `annotatr` can be obtained via the [GitHub repository](https://github.com/rcavalcante/annotatr) or [Bioconductor](https://bioconductor.org/packages/devel/bioc/html/annotatr.html). It is easiest to install development versions with the [`devtools`](https://cran.r-project.org/web/packages/devtools/index.html) package as follows:
+
+```{r, eval=FALSE}
 devtools::install_github('rcavalcante/annotatr')
 ```
+
+Changelogs for development releases will be detailed on [GitHub releases](https://github.com/rcavalcante/annotatr/releases).
 
 # Annotations
 
@@ -38,6 +42,8 @@ Supported annotations are given by `supported_annotations()`. Additionally, cust
 ## CpG Annotations
 
 The CpG islands are the basis for all CpG annotations, and are given by the `AnnotationHub` package for the given organism. CpG shores are defined as 2Kb upstream/downstream from the ends of the CpG islands, less the CpG islands. CpG shelves are defined as another 2Kb upstream/downstream of the farthest upstream/downstream limits of the CpG shores, less the CpG islands and CpG shores. The remaining genomic regions make up the inter-CGI annotation.
+
+CpG annotations are available for hg19, hg38, mm9, mm10, rn4, rn5, rn6.
 
 ![Schematic of CpG annotations.](annotatr_cpgs.jpeg)
 
@@ -53,13 +59,19 @@ Non-intergenic gene annotations include Entrez ID and gene symbol information wh
 
 The genic annotations have populated `tx_id`, `gene_id`, and `symbol` columns. Respectively they are, the knownGene transcript name, Entrez Gene ID, and gene symbol.
 
+Genic annotations are available for all hg19, hg38, mm9, mm10, rn4, rn5, rn6, dm3, and dm6.
+
 ## FANTOM5 Permissive Enhancers
 
-FANTOM5 permissive enhancers were determined from bi-directional CAGE transcription as in [Andersson et al. (2014)](http://www.nature.com/nature/journal/v507/n7493/full/nature12787.html), and are downloaded and processed for **hg19** and **mm9** from the [FANTOM5](http://fantom.gsc.riken.jp/5/datafiles/phase2.0/extra/Enhancers/) resource.
+FANTOM5 permissive enhancers were determined from bi-directional CAGE transcription as in [Andersson et al. (2014)](http://www.nature.com/nature/journal/v507/n7493/full/nature12787.html), and are downloaded and processed for hg19 and mm9 from the [FANTOM5](http://fantom.gsc.riken.jp/5/datafiles/phase2.0/extra/Enhancers/) resource.
 
 ## GENCODE lncRNA transcripts
 
 The long non-coding RNA (lncRNA) annotations are from [GENCODE](https://www.gencodegenes.org) for hg19, hg38, and mm10. The lncRNA transcripts are used, and we eventually plan to include the lncRNA introns/exons at a later date. The lncRNA annotations have populated `tx_id`, `gene_id`, and `symbol` columns. Respectively they are, the Ensembl transcript name, Entrez Gene ID, and gene symbol. As per the `transcript_type` field in the GENCODE anntotations, the [biotypes](https://www.gencodegenes.org/gencode_biotypes.html) are given in the `id` column.
+
+## Chromatin states from ChromHMM
+
+Chromatin states determined by chromHMM ([Ernst and Kellis (2012)](http://www.nature.com/nmeth/journal/v9/n3/full/nmeth.1906.html)) in hg19 are available for nine cell lines (Gm12878, H1hesc, Hepg2, Hmec, Hsmm, Huvec, K562, Nhek, and Nhlf) via the UCSC Genome Browser tracks. Annotations for all states can be built using a shortcut like `hg19_Gm12878-chromatin`, or specific chromatin states can be accessed via codes like `hg19_chromatin_Gm12878-StrongEnhancer` or `hg19_chromatin_Gm12878-Repressed`.
 
 ## Custom Annotations
 
@@ -107,7 +119,7 @@ print(dm_regions)
 
 Users may select annotations a la carte via the accessors listed with `supported_annotations()`, shortcuts, or use custom annotations as described above. The `hg19_cpgs` shortcut annotates regions to CpG islands, CpG shores, CpG shelves, and inter-CGI. The `hg19_basicgenes` shortcut annotates regions to 1-5Kb, promoters, 5'UTRs, exons, introns, and 3'UTRs. Shortcuts for other `supported_genomes()` are accessed in a similar way.
 
-`annotate_regions()` requires a `GRanges` object (either the result of `read_regions()` or an existing object), a `GRanges` object of the `annotations`, and a logical value indicating whether to `ignore.strand` when calling `GenomicRanges::findOverlaps()`.
+`annotate_regions()` requires a `GRanges` object (either the result of `read_regions()` or an existing object), a `GRanges` object of the `annotations`, and a logical value indicating whether to `ignore.strand` when calling `GenomicRanges::findOverlaps()`. The positive integer `minoverlap` is also passed to `GenomicRanges::findOverlaps()` and specifies the minimum overlap required for a region to be assigned to an annotation.
 
 Before annotating regions, they must be built with `build_annotations()` which requires a character vector of desired annotation codes.
 

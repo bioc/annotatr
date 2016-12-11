@@ -58,6 +58,7 @@ build_annotations = function(genome, annotations) {
     check_annotations(annotations)
     annotations = expand_annotations(annotations)
 
+    hmm_annotations = grep('_chromatin_', annotations, value=TRUE)
     enh_annotations = grep('_enhancers_', annotations, value=TRUE)
     gene_annotations = grep('_genes_', annotations, value=TRUE)
     cpg_annotations = grep('_cpg_', annotations, value=TRUE)
@@ -68,6 +69,9 @@ build_annotations = function(genome, annotations) {
 
     if(length(enh_annotations) != 0) {
         annots_grl = c(annots_grl, GenomicRanges::GRangesList(enhancers_fantom = suppressWarnings(build_enhancer_annots(genome = genome))))
+    }
+    if(length(hmm_annotations) != 0) {
+        annots_grl = c(annots_grl, GenomicRanges::GRangesList(chromatin = suppressWarnings(build_hmm_annots(genome = genome, annotations = hmm_annotations))))
     }
     if(length(gene_annotations) != 0) {
         annots_grl = c(annots_grl, suppressWarnings(build_gene_annots(genome = genome, annotations = gene_annotations)))
@@ -83,6 +87,69 @@ build_annotations = function(genome, annotations) {
     }
 
     return(unlist(annots_grl, use.names=FALSE))
+}
+
+#' A helper function to build chromHMM annotations for hg19 from UCSC Genome Browser.
+#'
+#' @param genome The genome assembly.
+#' @param annotations A character vector of valid chromatin state annotatin codes.
+#'
+#' @return A \code{GRanges} object.
+build_hmm_annots = function(genome = c('hg19'), annotations = supported_annotations()) {
+    # Ensure valid arguments
+    genome = match.arg(genome)
+    annotations = match.arg(annotations, several.ok = TRUE)
+
+    message('Building hmms...')
+
+    cell_lines = unique(sapply(annotations, get_cellline_from_code, USE.NAMES = FALSE))
+
+    # If chromHMMs for different cell lines are requested, need to get them all
+    hmms_list = GenomicRanges::GRangesList(lapply(cell_lines, function(line){
+        message(sprintf('Downloading chromHMM track for %s', line))
+        # Fetch the correct information for the line
+        con = sprintf('http://hgdownload.cse.ucsc.edu/goldenpath/%s/database/wgEncodeBroadHmm%sHMM.txt.gz', genome, line)
+        # Read from URL. There is surprisingly nothing in base that
+        # does this as easily, so here we are with readr again.
+        tbl = readr::read_tsv(con,
+            col_names = c('chr','start','end','type'),
+            col_types = '-ciic-----')
+
+        # Reformat types
+        types = sprintf('%s_chromatin_%s', genome, paste(line, reformat_hmm_codes(tbl$type), sep='-'))
+
+        # Convert to GRanges
+        gr = GenomicRanges::GRanges(
+            seqnames = tbl$chr,
+            ranges = IRanges::IRanges(start = tbl$start, end = tbl$end),
+            strand = '*',
+            type = types,
+            seqinfo = GenomeInfoDb::Seqinfo(genome=genome))
+
+        return(gr)
+    }))
+    hmms_gr = unlist(hmms_list, use.names = FALSE)
+
+    # Split the GRanges into a GRangesList for subsetting and id population
+    hmms_grl = IRanges::splitAsList(hmms_gr, GenomicRanges::mcols(hmms_gr)$type)
+
+    hmms_grl = hmms_grl[names(hmms_grl) %in% annotations]
+
+    hmms_grl = GenomicRanges::GRangesList(lapply(names(hmms_grl), function(n) {
+        gr = hmms_grl[[n]]
+        gr$id = paste0(n,':',seq_along(gr))
+        return(gr)
+    }))
+
+    hmms_gr = unlist(hmms_grl, use.names=FALSE)
+
+    GenomicRanges::mcols(hmms_gr)$tx_id = NA
+    GenomicRanges::mcols(hmms_gr)$gene_id = NA
+    GenomicRanges::mcols(hmms_gr)$symbol = NA
+
+    GenomicRanges::mcols(hmms_gr) = GenomicRanges::mcols(hmms_gr)[, c('id','tx_id','gene_id','symbol','type')]
+
+    return(hmms_gr)
 }
 
 #' A helper function to build enhancer annotations for hg19 and mm10 from FANTOM5.
@@ -136,26 +203,56 @@ build_cpg_annots = function(genome = supported_genomes(), annotations = supporte
         var = c('islands','shores','shelves','inter_cgi'),
         stringsAsFactors = FALSE)
 
-    # Create AnnotationHub connection
-    ah = AnnotationHub::AnnotationHub()
-
-    # And do the query for available CpG Islands
-    query = AnnotationHub::query(ah, c('CpG Islands'))
-
-    if(!(genome %in% query$genome)) {
-        stop(sprintf('AnnotationHub does not contain CpG Island annotations for %s', genome))
+    # Decide whether to use URL or AnnotationHub
+    ah_genomes = c('hg19','mm9','rn5','rn4')
+    if(genome == 'hg19' || genome == 'mm9' || genome == 'rn5' || genome == 'rn4') {
+        use_ah = TRUE
+    } else if (genome == 'hg38') {
+        use_ah = FALSE
+        con = 'http://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cpgIslandExt.txt.gz'
+    } else if (genome == 'mm10') {
+        use_ah = FALSE
+        con = 'http://hgdownload.cse.ucsc.edu/goldenpath/mm10/database/cpgIslandExt.txt.gz'
+    } else if (genome == 'rn6') {
+        use_ah = FALSE
+        con = 'http://hgdownload.cse.ucsc.edu/goldenpath/rn6/database/cpgIslandExt.txt.gz'
+    } else {
+        stop(sprintf('CpG features are not supported for genome %s', genome))
     }
 
-    # Determine the correct ID to extract data from AnnotationHub
-    ID = row.names(GenomicRanges::mcols(query)[GenomicRanges::mcols(query)$genome == genome, ])
+    if(use_ah) {
+        # Create AnnotationHub connection
+        ah = AnnotationHub::AnnotationHub()
+
+        # And do the query for available CpG Islands
+        query = AnnotationHub::query(ah, c('CpG Islands'))
+
+        # Determine the correct ID to extract data from AnnotationHub
+        ID = row.names(GenomicRanges::mcols(query)[GenomicRanges::mcols(query)$genome == genome, ])
+    }
 
     if(any(grepl('islands', annotations)) || any(grepl('shores', annotations)) || any(grepl('shelves', annotations)) || any(grepl('inter', annotations))) {
         message('Building CpG islands...')
         ### Islands
-            # Extract and sort the islands
-            islands = ah[[ID]]
-            GenomicRanges::strand(islands) = '*'
+            # Extract and sort the islands based on use_ah
+            if(use_ah) {
+                islands = ah[[ID]]
+            } else {
+                # Read from URL. There is surprisingly nothing in base that
+                # does this as easily, so here we are with readr again.
+                islands_tbl = readr::read_tsv(con,
+                    col_names = c('chr','start','end'),
+                    col_types = '-cii-------')
+                # Convert to GRanges
+                islands = GenomicRanges::GRanges(
+                    seqnames = islands_tbl$chr,
+                    ranges = IRanges::IRanges(start = islands_tbl$start, end = islands_tbl$end),
+                    strand = '*',
+                    seqinfo = GenomeInfoDb::Seqinfo(genome=genome)
+                    )
+            }
             islands = GenomicRanges::sort(islands)
+
 
             # Rename the islands
             GenomicRanges::mcols(islands)$id = paste0('island:', seq_along(islands))

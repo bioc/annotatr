@@ -1,3 +1,29 @@
+CHANGES IN VERSION 1.0.2
+-------------------------
+
+  o Correct result of supported_annotations().
+
+  o Add support for chromHMM tracks (chromatin state) from the UCSC Genome Browser.
+
+    o Users may annotate to chromatin states in multiple cell lines, if desired.
+
+  o Updated vignette to include chromHMM description.
+
+  o Add support for CpG annotations for hg38, mm10, and rn6 via the UCSC
+    goldenpath URLs.
+
+    o Consequently, require readr as a prerequisite to get data from the URL.
+
+  o Minor vignette updates.
+
+  o Add minoverlaps parameter to annotate_regions() that is passed to
+    GenomicRanges::findOverlaps().
+
+CHANGES IN VERSION 1.0.1
+-------------------------
+
+  o Require GenomeInfoDb >= 1.10.1 because of a change to NCBI servers.
+
 CHANGES IN VERSION 0.99.13
 -------------------------
 
