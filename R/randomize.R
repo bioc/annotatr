@@ -28,13 +28,13 @@ randomize_regions = function(regions, allow.overlaps = TRUE, per.chromosome = TR
     }
 
     # Get the genome from the regions
-    genome = unique(GenomeInfoDb::genome(regions))
+    genome = unique(Seqinfo::genome(regions))
 
     if(is.na(genome)) {
         stop('Error: regions GRanges object must have a valid genome to randomize its regions.')
     } else {
-        chr_lengths = GenomeInfoDb::Seqinfo(genome = genome)
-        chr_lengths = GenomeInfoDb::seqlengths(chr_lengths)
+        chr_lengths = Seqinfo::Seqinfo(genome = genome)
+        chr_lengths = Seqinfo::seqlengths(chr_lengths)
 
         df_genome = data.frame(
             'chr' = names(chr_lengths),

@@ -201,7 +201,7 @@ build_hmm_annots = function(genome = c('hg19'), annotations = annotatr::builtin_
             ranges = IRanges::IRanges(start = tbl$start, end = tbl$end),
             strand = '*',
             type = types,
-            seqinfo = GenomeInfoDb::Seqinfo(genome=genome))
+            seqinfo = Seqinfo::Seqinfo(genome=genome))
         }, error = function(e) {
             GenomicRanges::GRanges(
             seqnames = tbl$chr,
@@ -356,7 +356,7 @@ build_cpg_annots = function(genome = annotatr::builtin_genomes(), annotations = 
                         seqnames = islands_tbl$chr,
                         ranges = IRanges::IRanges(start = islands_tbl$start, end = islands_tbl$end),
                         strand = '*',
-                        seqinfo = GenomeInfoDb::Seqinfo(genome=genome))
+                        seqinfo = Seqinfo::Seqinfo(genome=genome))
                 }, error = function(e){
                     GenomicRanges::GRanges(
                         seqnames = islands_tbl$chr,
@@ -874,7 +874,7 @@ build_lncrna_annots = function(genome = c('hg19','hg38','mm10')) {
         GenomicRanges::mcols(lncrna_gr) = GenomicRanges::mcols(lncrna_gr)[, c('id','tx_id','gene_id','symbol','type')]
 
         if(use_ah) {
-            GenomeInfoDb::seqinfo(lncrna_gr) = GenomeInfoDb::Seqinfo(genome = genome)
+            Seqinfo::seqinfo(lncrna_gr) = Seqinfo::Seqinfo(genome = genome)
         }
 
     return(lncrna_gr)

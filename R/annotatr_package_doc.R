@@ -11,8 +11,8 @@
 #' @import ggplot2
 #' @import GenomicFeatures
 #' @rawNamespace import(GenomicRanges, except=c('union','setdiff','intersect','union'))
-#' @importClassesFrom GenomeInfoDb Seqinfo
-#' @importFrom GenomeInfoDb seqnames seqlengths
+#' @importClassesFrom Seqinfo Seqinfo
+#' @importFrom Seqinfo seqnames seqlengths
 #' @importFrom IRanges IRanges
 #' @importFrom S4Vectors endoapply
 #' @importFrom S4Vectors splitAsList
