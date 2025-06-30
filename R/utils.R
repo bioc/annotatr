@@ -8,6 +8,7 @@ TXDBS = c(
     'TxDb.Hsapiens.UCSC.hg38.knownGene',
     'TxDb.Mmusculus.UCSC.mm9.knownGene',
     'TxDb.Mmusculus.UCSC.mm10.knownGene',
+    'TxDb.Mmusculus.UCSC.mm39.knownGene',
     'TxDb.Rnorvegicus.UCSC.rn4.ensGene',
     'TxDb.Rnorvegicus.UCSC.rn5.refGene',
     'TxDb.Rnorvegicus.UCSC.rn6.refGene',
@@ -15,8 +16,8 @@ TXDBS = c(
 
 # org.* family of packages
 ORGDBS = data.frame(
-    genome = c('dm3','dm6','galGal5','hg19','hg38','mm9','mm10','rn4','rn5','rn6','rn7'),
-    org = c('Dm','Dm','Gg','Hs','Hs','Mm','Mm','Rn','Rn','Rn','Rn'),
+    genome = c('dm3','dm6','galGal5','hg19','hg38','mm9','mm10','mm39','rn4','rn5','rn6','rn7'),
+    org = c('Dm','Dm','Gg','Hs','Hs','Mm','Mm','Mm','Rn','Rn','Rn','Rn'),
     stringsAsFactors = FALSE)
 
 HMMCELLLINES = c('Gm12878','H1hesc','Hepg2','Hmec','Hsmm','Huvec','K562','Nhek','Nhlf')

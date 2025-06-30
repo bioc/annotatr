@@ -44,6 +44,7 @@ Suggests:
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     TxDb.Mmusculus.UCSC.mm9.knownGene,
     TxDb.Mmusculus.UCSC.mm10.knownGene,
+    TxDb.Mmusculus.UCSC.mm39.knownGene,
     TxDb.Rnorvegicus.UCSC.rn4.ensGene,
     TxDb.Rnorvegicus.UCSC.rn5.refGene,
     TxDb.Rnorvegicus.UCSC.rn6.refGene,
