@@ -320,6 +320,9 @@ build_cpg_annots = function(genome = annotatr::builtin_genomes(), annotations = 
     } else if (genome == 'rn6') {
         use_ah = FALSE
         con = 'http://hgdownload.cse.ucsc.edu/goldenpath/rn6/database/cpgIslandExt.txt.gz'
+    } else if (genome == 'rn7') {
+        use_ah = FALSE
+        con = 'http://hgdownload.cse.ucsc.edu/goldenpath/rn7/database/cpgIslandExt.txt.gz'
     } else if (genome == 'galGal5') {
         use_ah = FALSE
         con = 'http://hgdownload.cse.ucsc.edu/goldenpath/galGal5/database/cpgIslandExt.txt.gz'
