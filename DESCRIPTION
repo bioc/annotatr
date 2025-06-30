@@ -39,6 +39,8 @@ Suggests:
     testthat,
     TxDb.Dmelanogaster.UCSC.dm3.ensGene,
     TxDb.Dmelanogaster.UCSC.dm6.ensGene,
+    TxDb.Drerio.UCSC.danRer10.refGene,
+    TxDb.Drerio.UCSC.danRer11.refGene,
     TxDb.Ggallus.UCSC.galGal5.refGene,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
     TxDb.Hsapiens.UCSC.hg38.knownGene,
