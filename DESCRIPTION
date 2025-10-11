@@ -15,12 +15,13 @@ Imports:
     GenomicFeatures (>= 1.61.4),
     GenomicRanges (>= 1.61.1),
     Seqinfo,
-    ggplot2,
+    ggplot2 (>= 3.5.0),
     IRanges,
     methods,
     readr,
     regioneR,
     reshape2,
+    rlang,
     rtracklayer (>= 1.69.1),
     S4Vectors (>= 0.23.10),
     stats,
@@ -52,5 +53,6 @@ VignetteBuilder: knitr
 BugReports: https://www.github.com/rcavalcante/annotatr/issues
 License: GPL-3
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
+Encoding: UTF-8
 biocViews: Software, Annotation, GenomeAnnotation, FunctionalGenomics, Visualization

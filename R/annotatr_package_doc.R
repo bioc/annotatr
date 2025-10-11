@@ -9,6 +9,7 @@
 #' @rawNamespace import(AnnotationHub, except='query')
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom rlang .data
 #' @import GenomicFeatures
 #' @rawNamespace import(GenomicRanges, except=c('union','setdiff','intersect','union'))
 #' @importClassesFrom Seqinfo Seqinfo
