@@ -86,15 +86,15 @@ plot_annotation = function(annotated_regions, annotated_random, annotation_order
     # NOTE: binwidth may need to be a parameter
     if(missing(annotated_random)) {
         plot =
-        ggplot(annotated_regions, aes_string(x='annot.type')) +
+        ggplot(annotated_regions, aes(x = .data[["annot.type"]])) +
             geom_bar() +
             theme_bw() +
             theme(axis.text.x = element_text(angle = 30, hjust = 1),
                 legend.title=element_blank(), legend.position="bottom", legend.key = element_rect(color = 'white'))
     } else {
         plot =
-            ggplot(annotated_regions, aes_string(x='annot.type')) +
-            geom_bar(aes_string(fill = 'data_type'), position='dodge') +
+            ggplot(annotated_regions, aes(x = .data[["annot.type"]])) +
+            geom_bar(aes(fill = .data[["data_type"]]), position='dodge') +
             theme_bw() +
             scale_fill_grey() +
             theme(axis.text.x = element_text(angle = 30, hjust = 1),
@@ -189,9 +189,9 @@ plot_coannotations = function(annotated_regions, annotation_order = NULL,
 
     # Make the base ggplot
     # NOTE: binwidth may need to be a parameter
-    plot = ggplot(pac_m, aes_string('Var1', 'Var2')) +
-        geom_raster(aes_string(fill = 'Counts')) +
-        geom_text(aes_string(label = 'Counts')) +
+    plot = ggplot(pac_m, aes(x = .data[["Var1"]], y = .data[["Var2"]])) +
+        geom_raster(aes(fill = .data[["Counts"]])) +
+        geom_text(aes(label = .data[["Counts"]])) +
         scale_fill_gradient(low = "white", high = "steelblue") +
         theme(axis.text.x = element_text(angle = 30, hjust = 1), axis.text.y = element_text(angle = 30, hjust = 1))
 
@@ -363,7 +363,7 @@ plot_numerical = function(annotated_regions, x, y, facet, facet_order, bin_width
             # Facet hists are plotted with distinct (seqnames, start, end, annot.type) combinations
             ggplot(
                 data = facet_data,
-                aes_string(x=x, y='..density..')) +
+                aes(x = .data[[x]], y = after_stat(density))) +
             geom_histogram(binwidth=bin_width, aes(fill = legend_facet_label)) +
             facet_wrap( stats::as.formula(facet_formula) ) + # Over the facets
             # All hist is plotted with distinct (seqnames, start, end) combinations
@@ -376,7 +376,7 @@ plot_numerical = function(annotated_regions, x, y, facet, facet_order, bin_width
             theme(legend.title=element_blank(), legend.position="bottom", legend.key = element_rect(color = c('red','white')))
     } else {
         # Make the base scatter ggplot
-        plot = ggplot(facet_data, aes_string(x=x, y=y)) +
+        plot = ggplot(facet_data, aes(x = .data[[x]], y = .data[[y]])) +
             geom_point(alpha = 1/8, size = 1) +
             facet_wrap( stats::as.formula(facet_formula) ) +
             theme_bw()
@@ -510,7 +510,7 @@ plot_numerical_coannotations = function(annotated_regions, x, y, annot1, annot2,
             # Facet hists are plotted with distinct (seqnames, start, end, annot1, annot2) combinations
             ggplot(
                 data = facet_data,
-                aes_string(x=x, y='..density..')) +
+                aes(x = .data[[x]], y = after_stat(density))) +
             geom_histogram(binwidth=bin_width, aes(fill = legend_facet_label)) +
             facet_wrap( V1 ~ V2 ) + # Over the facets
             # All hist is plotted with distinct (seqnames, start, end) combinations
@@ -523,7 +523,7 @@ plot_numerical_coannotations = function(annotated_regions, x, y, annot1, annot2,
             theme(legend.title=element_blank(), legend.position="bottom", legend.key = element_rect(color = c('red','white')))
     } else {
         # Make the base scatter ggplot
-        plot = ggplot(pairs_by_region, aes_string(x=x, y=y)) +
+        plot = ggplot(pairs_by_region, aes(x = .data[[x]], y = .data[[y]])) +
             geom_point(alpha = 1/8, size = 1) +
             facet_wrap( V1 ~ V2 ) +
             theme_bw()
@@ -692,15 +692,15 @@ plot_categorical = function(annotated_regions, annotated_random, x, fill=NULL, x
     # Make base ggplot
     if(!missing(annotated_random)) {
         plot =
-            ggplot(annotated_regions, aes_string(x='data_type')) +
-            geom_bar(aes_string(fill=fill), position=position, width=0.5) + # The All bar
-            geom_bar(data = sub_annot_regions, aes_string(x=x, fill=fill), position=position, width=0.5) + # The subsets bars
+            ggplot(annotated_regions, aes(x = .data[["data_type"]])) +
+            geom_bar(aes(fill = .data[[fill]]), position=position, width=0.5) + # The All bar
+            geom_bar(data = sub_annot_regions, aes(x = .data[[x]], fill = .data[[fill]]), position=position, width=0.5) + # The subsets bars
             theme(axis.text.x = element_text(angle = 30, hjust = 1))
     } else {
         plot =
-            ggplot(annotated_regions, aes(x='All')) +
-            geom_bar(aes_string(fill=fill), position=position, width=0.5) + # The All bar
-            geom_bar(data = sub_annot_regions, aes_string(x=x, fill=fill), position=position, width=0.5) + # The subsets bars
+            ggplot(annotated_regions, aes(x = 'All')) +
+            geom_bar(aes(fill = .data[[fill]]), position=position, width=0.5) + # The All bar
+            geom_bar(data = sub_annot_regions, aes(x = .data[[x]], fill = .data[[fill]]), position=position, width=0.5) + # The subsets bars
             theme(axis.text.x = element_text(angle = 30, hjust = 1))
     }
 

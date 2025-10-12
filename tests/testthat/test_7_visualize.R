@@ -77,9 +77,9 @@ test_that('Test plot_annotation() success', {
         x_label = 'Annotation Type',
         y_label = 'Count')
 
-    expect_equal( dplyr::setequal(class(dm_va_min), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_va), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_va_rnd), c('gg','ggplot')), expected = TRUE)
+    expect_s3_class(dm_va_min, "ggplot")
+    expect_s3_class(dm_va, "ggplot")
+    expect_s3_class(dm_va_rnd, "ggplot")
 })
 
 ################################################################################
@@ -93,7 +93,7 @@ test_that('Test plot_coannotations() success', {
         axes_label = 'Annotations',
         plot_title = 'Co-occurrence of Annotations')
 
-    expect_equal( dplyr::setequal(class(dm_vs_ca), c('gg','ggplot')), expected = TRUE)
+    expect_s3_class(dm_vs_ca, "ggplot")
 })
 
 ################################################################################
@@ -151,9 +151,9 @@ test_that('Test plot_numerical() success', {
         x_label = 'Group 0',
         y_label = 'Group 1')
 
-    expect_equal( dplyr::setequal(class(dm_vs_regions_mu1), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_vs_regions_annot), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_vs_regions_name), c('gg','ggplot')), expected = TRUE)
+    expect_s3_class(dm_vs_regions_mu1, "ggplot")
+    expect_s3_class(dm_vs_regions_annot, "ggplot")
+    expect_s3_class(dm_vs_regions_name, "ggplot")
 })
 
 ################################################################################
@@ -182,8 +182,8 @@ test_that('Test plot_numerical_coannotations()', {
     x_label = 'Percent Methylation',
     y_label = 'Percent Methylation')
 
-    expect_equal( dplyr::setequal(class(dm_vs_num_co1), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_vs_num_co2), c('gg','ggplot')), expected = TRUE)
+    expect_s3_class(dm_vs_num_co1, "ggplot")
+    expect_s3_class(dm_vs_num_co2, "ggplot")
 })
 
 ################################################################################
@@ -287,7 +287,7 @@ test_that('Test plot_categorical() success', {
         x_label = 'DM status',
         y_label = 'Proportion')
 
-    expect_equal( dplyr::setequal(class(dm_vn_min), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_vn), c('gg','ggplot')), expected = TRUE)
-    expect_equal( dplyr::setequal(class(dm_vn_rnd), c('gg','ggplot')), expected = TRUE)
+    expect_s3_class(dm_vn_min, "ggplot")
+    expect_s3_class(dm_vn, "ggplot")
+    expect_s3_class(dm_vn_rnd, "ggplot")
 })

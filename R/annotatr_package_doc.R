@@ -9,10 +9,11 @@
 #' @rawNamespace import(AnnotationHub, except='query')
 #' @import dplyr
 #' @import ggplot2
+#' @importFrom rlang .data
 #' @import GenomicFeatures
 #' @rawNamespace import(GenomicRanges, except=c('union','setdiff','intersect','union'))
-#' @importClassesFrom GenomeInfoDb Seqinfo
-#' @importFrom GenomeInfoDb seqnames seqlengths
+#' @importClassesFrom Seqinfo Seqinfo
+#' @importFrom Seqinfo seqnames seqlengths
 #' @importFrom IRanges IRanges
 #' @importFrom S4Vectors endoapply
 #' @importFrom S4Vectors splitAsList
