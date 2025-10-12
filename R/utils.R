@@ -3,19 +3,23 @@
 TXDBS = c(
     'TxDb.Dmelanogaster.UCSC.dm3.ensGene',
     'TxDb.Dmelanogaster.UCSC.dm6.ensGene',
+    'TxDb.Drerio.UCSC.danRer10.refGene',
+    'TxDb.Drerio.UCSC.danRer11.refGene',
     'TxDb.Ggallus.UCSC.galGal5.refGene',
     'TxDb.Hsapiens.UCSC.hg19.knownGene',
     'TxDb.Hsapiens.UCSC.hg38.knownGene',
     'TxDb.Mmusculus.UCSC.mm9.knownGene',
     'TxDb.Mmusculus.UCSC.mm10.knownGene',
+    'TxDb.Mmusculus.UCSC.mm39.knownGene',
     'TxDb.Rnorvegicus.UCSC.rn4.ensGene',
     'TxDb.Rnorvegicus.UCSC.rn5.refGene',
-    'TxDb.Rnorvegicus.UCSC.rn6.refGene')
+    'TxDb.Rnorvegicus.UCSC.rn6.refGene',
+    'TxDb.Rnorvegicus.UCSC.rn7.refGene')
 
 # org.* family of packages
 ORGDBS = data.frame(
-    genome = c('dm3','dm6','galGal5','hg19','hg38','mm9','mm10','rn4','rn5','rn6'),
-    org = c('Dm','Dm','Gg','Hs','Hs','Mm','Mm','Rn','Rn','Rn'),
+    genome = c('dm3','dm6','danRer10','danRer11','galGal5','hg19','hg38','mm9','mm10','mm39','rn4','rn5','rn6','rn7'),
+    org = c('Dm','Dm','Dr','Dr','Gg','Hs','Hs','Mm','Mm','Mm','Rn','Rn','Rn','Rn'),
     stringsAsFactors = FALSE)
 
 HMMCELLLINES = c('Gm12878','H1hesc','Hepg2','Hmec','Hsmm','Huvec','K562','Nhek','Nhlf')
