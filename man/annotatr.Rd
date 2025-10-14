@@ -2,8 +2,25 @@
 % Please edit documentation in R/annotatr_package_doc.R
 \docType{package}
 \name{annotatr}
+\alias{annotatr-package}
 \alias{annotatr}
 \title{annotatr: Annotation of Genomic Regions to Functional Annotations}
 \description{
 Given a set of genomic sites/regions (e.g. ChIP-seq peaks, CpGs, differentially methylated CpGs or regions, SNPs, etc.) it is often of interest to investigate the intersecting functional annotations. Such annotations include those relating to gene models (promoters, 5'UTRs, exons, introns, and 3'UTRs), CpGs (CpG islands, CpG shores, CpG shelves), the non-coding genome, and enhancers. The annotatr package provides an easy way to summarize and visualize the intersection of genomic sites/regions with the above functional annotations.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://www.github.com/rcavalcante/annotatr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Raymond G. Cavalcante \email{rcavalca@umich.edu}
+
+Other contributors:
+\itemize{
+  \item Maureen A. Sartor \email{sartorma@med.umich.edu} [thesis advisor]
+}
+
 }

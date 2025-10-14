@@ -1,6 +1,6 @@
 Package: annotatr
 Title: Annotation of Genomic Regions to Genomic Annotations
-Version: 1.35.1
+Version: 1.35.2
 Date: 2025-06-21
 Authors@R: c(
     person("Raymond G.", "Cavalcante", email = "rcavalca@umich.edu", role = c("aut", "cre")),
@@ -15,12 +15,13 @@ Imports:
     GenomicFeatures (>= 1.61.4),
     GenomicRanges (>= 1.61.1),
     Seqinfo,
-    ggplot2,
+    ggplot2 (>= 3.5.0),
     IRanges,
     methods,
     readr,
     regioneR,
     reshape2,
+    rlang,
     rtracklayer (>= 1.69.1),
     S4Vectors (>= 0.23.10),
     stats,
@@ -40,17 +41,22 @@ Suggests:
     testthat,
     TxDb.Dmelanogaster.UCSC.dm3.ensGene,
     TxDb.Dmelanogaster.UCSC.dm6.ensGene,
+    TxDb.Drerio.UCSC.danRer10.refGene,
+    TxDb.Drerio.UCSC.danRer11.refGene,
     TxDb.Ggallus.UCSC.galGal5.refGene,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
     TxDb.Hsapiens.UCSC.hg38.knownGene,
     TxDb.Mmusculus.UCSC.mm9.knownGene,
     TxDb.Mmusculus.UCSC.mm10.knownGene,
+    TxDb.Mmusculus.UCSC.mm39.knownGene,
     TxDb.Rnorvegicus.UCSC.rn4.ensGene,
     TxDb.Rnorvegicus.UCSC.rn5.refGene,
-    TxDb.Rnorvegicus.UCSC.rn6.refGene
+    TxDb.Rnorvegicus.UCSC.rn6.refGene,
+    TxDb.Rnorvegicus.UCSC.rn7.refGene
 VignetteBuilder: knitr
 BugReports: https://www.github.com/rcavalcante/annotatr/issues
 License: GPL-3
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
+Encoding: UTF-8
 biocViews: Software, Annotation, GenomeAnnotation, FunctionalGenomics, Visualization
